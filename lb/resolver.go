@@ -120,7 +120,7 @@ func (b *consulBuilder) Build(target resolver.Target, cc resolver.ClientConn, op
     return c, nil
 }
 
-func (b consulBuilder) Scheme() string {
+func (b *consulBuilder) Scheme() string {
     return schemeName
 }
 
