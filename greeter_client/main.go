@@ -3,6 +3,7 @@ package main
 import (
     "context"
     "flag"
+    "fmt"
     "log"
     "time"
 
@@ -10,6 +11,7 @@ import (
     pb "grpcdemo/pb/helloworld"
 
     "google.golang.org/grpc"
+    "google.golang.org/grpc/balancer/roundrobin"
     "google.golang.org/grpc/credentials/insecure"
 )
 
@@ -24,10 +26,11 @@ func main() {
     flag.Parse()
     lb.Init()
 
-    //conn, err := grpc.Dial(*addr, grpc.WithInsecure())
-    // TODO consul cluster
-    //conn, err := grpc.Dial("consul://localhost:8500/hello.service?tag=dev&a=b&c=d")
-    conn, err := grpc.Dial("consul://localhost:8500/hello.service", grpc.WithTransportCredentials(insecure.NewCredentials()))
+    target := "consul://localhost:8500/hello.service" // TODO consul cluster
+
+    conn, err := grpc.Dial(target,
+        grpc.WithTransportCredentials(insecure.NewCredentials()),
+        grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"loadBalancingConfig": [{"%s":{}}]}`, roundrobin.Name)))
 
     if err != nil {
         log.Fatalf("did not connect: %v", err)
