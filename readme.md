@@ -211,7 +211,7 @@ func (c *consulResolver) Close() {
 }
 
 // 实现了调用 consul 接口获取指定服务的可用节点
-// WaitIndex 用于阻塞，知道有新的可用节点，避免重复刷新
+// WaitIndex 用于阻塞，直到有新的可用节点，避免重复刷新
 // 将获取到的可用节点更新 c.cc.UpdateState
 // 支持了 consul 的 tag 过滤，在 target 通过 query 参数传递
 func (c *consulResolver) watcher() {
