@@ -1,4 +1,4 @@
-# Readme
+# 基于 Consul 作为 NameResolver 解析器实现 gRPC 服务发现的 Demo
 
 
 ## gRPC 的 Name Resolution
