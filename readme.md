@@ -334,7 +334,7 @@ grpc_health_v1.RegisterHealthServer(s, health.NewServer())
   conn, err := grpc.DialContext(ctx,
       target,
       grpc.WithTransportCredentials(insecure.NewCredentials()),
-      grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"loadBalancingConfig": [{"%s":{}}]}`, roundrobin.Name))) // 负载均衡策略，默认 first_pick ,文档：
+      grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"loadBalancingConfig": [{"%s":{}}]}`, roundrobin.Name))) // 负载均衡策略，默认 pick_first ,文档：https://github.com/grpc/grpc/blob/master/doc/load-balancing.md
 
 ```
 
