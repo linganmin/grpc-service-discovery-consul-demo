@@ -28,7 +28,11 @@ func main() {
 
     target := "consul://localhost:8500/hello.service" // TODO consul cluster
 
-    conn, err := grpc.Dial(target,
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+    defer cancel()
+
+    conn, err := grpc.DialContext(ctx,
+        target,
         grpc.WithTransportCredentials(insecure.NewCredentials()),
         grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"loadBalancingConfig": [{"%s":{}}]}`, roundrobin.Name)))
 
@@ -39,10 +43,6 @@ func main() {
     defer conn.Close()
 
     c := pb.NewGreeterClient(conn)
-
-    ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-
-    defer cancel()
 
     r, err := c.SayHello(ctx, &pb.HelloReq{Name: *name})
 

@@ -11,16 +11,6 @@ import (
     "google.golang.org/grpc/resolver"
 )
 
-// ----------- resolver 做的事情
-// 解析 target 获取 scheme
-// 调用 resolver.Get 根据 scheme 拿到对应的 Builder
-// 调用 Builder.Build 方法
-// - 解析 target
-// - 获取服务地址的信息
-// - 调用 ClientConn.NewAddress 和 NewServiceConfig 这俩 callback 把服务信息传递给上层的调用方
-// - 返回 Resolver 接口实例给上层
-// 上层可以通过Resolver.ResolveNow 方法主动刷新服务信息
-
 type consulResolver struct {
     address              string
     tag                  string
@@ -31,7 +21,7 @@ type consulResolver struct {
     lastIndex            uint64
 }
 
-// ResolveNow 和 Consul 保持了订阅发布关系，不需要定时刷新
+// ResolveNow 更新逻辑在 watcher 里处理掉了
 func (c *consulResolver) ResolveNow(o resolver.ResolveNowOptions) {
 
 }
@@ -42,6 +32,8 @@ func (c *consulResolver) Close() {
 }
 
 func (c *consulResolver) watcher() {
+
+    defer c.wg.Done()
 
     conf := api.DefaultConfig()
 
