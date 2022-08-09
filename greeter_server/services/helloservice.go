@@ -1,18 +1,18 @@
 package services
 
 import (
-    "context"
-    "time"
+	"context"
+	"time"
 
-    pb "grpcdemo/pb/helloworld"
+	pb "grpcdemo/pb/helloworld"
 )
 
 type HelloService struct {
-    pb.UnimplementedGreeterServer
+	pb.UnimplementedGreeterServer
 }
 
 func (h *HelloService) SayHello(ctx context.Context, req *pb.HelloReq) (*pb.HelloResp, error) {
 
-    time.Sleep(time.Second * 1) // 模拟耗时操作
-    return &pb.HelloResp{Message: req.Name}, nil
+	time.Sleep(time.Second * 1) // 模拟耗时操作
+	return &pb.HelloResp{Message: req.Name}, nil
 }

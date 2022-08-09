@@ -346,5 +346,6 @@ grpc_health_v1.RegisterHealthServer(s, health.NewServer())
 1. 和本地环境相通的 consul ，例如在本机使用 docker 启动一个 consul 节点
 2. 将代码中的 consul 地址`localhost:8500`替换为可用地址
 3. 执行`go mod tidy`处理依赖
-4. `go run greeter_server/main.go` 启动服务，也可指定端口，例如：`go run greeter_server/main.go  -port 12124`, 可以去 consul dashboard 查看服务注册及健康检查状态，可以指定端口多启动几个节点
-5. `go run greeter_client/main.go -name 小下` 发起客户端请求
+4. `protoc --go_out=plugins=grpc:. protos/helloworld.proto`
+5. `go run greeter_server/main.go` 启动服务，也可指定端口，例如：`go run greeter_server/main.go  -port 12124`, 可以去 consul dashboard 查看服务注册及健康检查状态，可以指定端口多启动几个节点
+6. `go run greeter_client/main.go -name 小下` 发起客户端请求
